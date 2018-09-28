@@ -1,4 +1,4 @@
-function Search(values) {
+function cleanSearch(values) {
 	this.checkType = function(type) {
 		var type;
 		// Strings are ok
@@ -67,6 +67,7 @@ function Search(values) {
 	}
 
 	this.lowerCase = function(values) {
+		if(!values) values = this.values;
 		for(var i = 0; i < values.length; i ++) {
 			var type = this.checkType(values[i]);
 			// check for objects, arrays, numbers
@@ -97,13 +98,13 @@ function Search(values) {
 			if(value === bigValue) return true;
 		}
 		if(propertyType === "object") {
-			if(this.search(value,[bigValue])) return true;
+			if(this.searchFor(value,[bigValue])) return true;
 		}
 		if(propertyType === "array") {
-			if(this.search(value, bigValue)) return true;
+			if(this.searchFor(value, bigValue)) return true;
 		}
 	}
-	this.search = function(searcValue,values) {
+	this.searchFor = function(searcValue,values) {
 		if(!values) values = this.values;
 		values = this.lowerCase(values);
 		var value = searcValue;
@@ -140,7 +141,7 @@ function Search(values) {
 		
 					var propertyType2 = this.checkType(values[i][t]);
 
-					if(this.recursiveConditions(propertyType2,value,values[i][t],this.search)) {
+					if(this.recursiveConditions(propertyType2,value,values[i][t],this.searchFor)) {
 						return true;
 					}
 				}
