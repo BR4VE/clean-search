@@ -151,15 +151,3 @@ function Search(values) {
 
 	this.values = this.removeValues(values);		 
 }
-
-
-
-
-
-
-
-
-
-
-
-
