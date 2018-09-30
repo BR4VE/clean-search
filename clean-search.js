@@ -14,40 +14,37 @@ function cleanSearch(values) {
 	}
 
 	this.removeValues = function(values) {
+		var unwantedArray = ["NaN","null","undefined"];
 		for(var i = 0; i < values.length; i ++) {
 			var type = this.checkType(values[i]);
 			// remove unwanted values
-			if(type === "NaN" || type === "null" || type === "undefined") {
-				values.splice(i, 1);
-				i -= 1;
-				continue;
+
+			for(var k = 0; k < unwantedArray.length; k ++) {
+				if(type === unwantedArray[k]) {
+					values.splice(i,1);
+					i -=1;
+				}
 			}
 			// remove unwanted values in arrays
 			if(type === "array" && values[i].length) {
 				this.removeValues(values[i]);
 			}
 			// remove unwanted values in objects
-			if(type === "object" && Object.keys(values[i]).length) {
-				var length = Object.keys(values[i]).length;
-				for(var k = 0; k < length; k++) {
-					// get the current key
-					var key = Object.keys(values[i])[k];
-					// check the property type
-					var propertyType = this.checkType(values[i][key]);
-
-					if(propertyType === "NaN" || propertyType === "null" || propertyType === "undefined") {
-						// empty object properties will be replaced with empty string
-						// deleting empty properties brake the recursiveness
-						values[i][key] = "";
-						continue;					
+			if(type === "object") {
+				for(var item in values[i]) {
+					var propertyType = this.checkType(values[i][item]);
+					for (var k = 0; k < unwantedArray.length; k++) {
+						if(propertyType === unwantedArray[k]){
+							values[i][item] = "";
+							continue;
+						}
 					}
-					// if current object has another objects or arrays in it, repeat the process
 					if(propertyType === "object") {
-						this.removeValues([values[i][key]]);
+						this.removeValues([values[i][item]]);
 					}
 					if(propertyType === "array") {
-						this.removeValues(values[i][key]);
-					}	
+						this.removeValues(values[i][item]);
+					}
 				}
 			}
 		}
@@ -152,3 +149,11 @@ function cleanSearch(values) {
 
 	this.values = this.removeValues(values);		 
 }
+
+
+
+var ses = new cleanSearch([123,"abc",undefined,{ a: "ses", b: null, c: [undefined,"123"]}]);
+
+console.log(ses.values);
+
+
