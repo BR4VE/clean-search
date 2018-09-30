@@ -152,8 +152,3 @@ function cleanSearch(values) {
 
 
 
-var ses = new cleanSearch([123,"abc",undefined,{ a: "ses", b: null, c: [undefined,"123"]}]);
-
-console.log(ses.values);
-
-
