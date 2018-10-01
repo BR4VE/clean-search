@@ -141,8 +141,3 @@ function cleanSearch(values) {
 
 	this.values = this.removeValues(values);		 
 }
-
-
-var ses = new cleanSearch([123,null,undefined, [undefined ,null, { a: null, b: [NaN]}]]);
-
-console.log(ses.values);
