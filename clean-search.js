@@ -69,14 +69,9 @@ function cleanSearch(values) {
 			var type = this.checkType(values[i]);
 			// check for objects, arrays, numbers
 			if(type === "object") {
-
-				for(var k = 0; k < Object.keys(values[i]).length ; k++) {
-
-					var key = Object.keys(values[i])[k];
-
-					var propertyType1 = this.checkType(values[i][key]);
-
-					this.toLower(propertyType1, values[i],key);
+				for(var item in values[i]) {
+					var propertyType1 = this.checkType(values[i][item]);
+					this.toLower(propertyType1, values[i],item);
 				}
 			}
 			if(type === "array") {
@@ -121,11 +116,8 @@ function cleanSearch(values) {
 			}
 
 			if(type === "object") {
-				for(var k = 0; k < Object.keys(values[i]).length; k++) {
-					
-					var key = Object.keys(values[i])[k];
-
-					var propertyType = this.checkType(values[i][key]);
+				for(var item in values[i]) {
+					var propertyType = this.checkType(values[i][item]);
 
 					if(this.recursiveConditions(propertyType, value, values[i][key])) {
 						return true;
@@ -138,7 +130,7 @@ function cleanSearch(values) {
 		
 					var propertyType2 = this.checkType(values[i][t]);
 
-					if(this.recursiveConditions(propertyType2,value,values[i][t],this.searchFor)) {
+					if(this.recursiveConditions(propertyType2,value,values[i][t])) {
 						return true;
 					}
 				}
@@ -151,4 +143,6 @@ function cleanSearch(values) {
 }
 
 
+var ses = new cleanSearch([123,null,undefined, [undefined ,null, { a: null, b: [NaN]}]]);
 
+console.log(ses.values);
